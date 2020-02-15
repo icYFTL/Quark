@@ -1,0 +1,32 @@
+﻿<mui:ModernWindow x:Class="Quark.MainWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  Title="Quark" 
+                  Style="{StaticResource BlankWindow}">
+
+    <TabControl Background="{x:Null}" BorderBrush="{x:Null}">
+            <TabItem Header="Задания">
+            <Grid Background="#252526"/>
+            </TabItem>
+            <TabItem Header="Метод">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        <TabItem Header="Алгоритм">
+            <Grid Background="#FFE5E5E5"/>
+        </TabItem>
+        <TabItem Header="Блок схема">
+            <Grid Background="#FFE5E5E5"/>
+        </TabItem>
+        <TabItem Header="Код">
+            <Grid Background="#FFE5E5E5"/>
+        </TabItem>
+        <TabItem Header="Тесты">
+            <Grid Background="#FFE5E5E5"/>
+        </TabItem>
+        <TabItem Header="Отправка">
+            <Grid Background="#FFE5E5E5"/>
+        </TabItem>
+    </TabControl>
+
+</mui:ModernWindow>
