@@ -32,5 +32,10 @@ namespace Quark.source.LoginWindow
 
             RaisePropertyChanged("StudentItems");
         }
+
+        public void StudentsClear()
+        {
+            _studentItems.Clear();
+        }
     }
 }

@@ -51,6 +51,8 @@ namespace Quark.source.LoginWindow
 
         public void UpdateStudents(string group)
         {
+            _model.StudentsClear();
+
             InternalBD _bd = InternalBD.getInstance();
             _model.UpdateStudents(_bd.GetStudents(group));
         }
