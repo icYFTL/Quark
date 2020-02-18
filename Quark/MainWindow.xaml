@@ -5,6 +5,9 @@
                   xmlns:vm="clr-namespace:Quark.source.MWindow"
                   xmlns:ie="http://schemas.microsoft.com/xaml/behaviors" 
                   xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+                  xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                  xmlns:editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit"
+                  xmlns:rendering="clr-namespace:ICSharpCode.AvalonEdit.Rendering;assembly=ICSharpCode.AvalonEdit"
                   Title="Quark" 
                   Style="{StaticResource BlankWindow}">
 
@@ -12,10 +15,43 @@
         <vm:ViewModel/>
     </mui:ModernWindow.DataContext>
 
-    <TabControl Background="{x:Null}" BorderBrush="{x:Null}">
-        <TabItem Header="Задания">
+
+
+    <TabControl Background="{x:Null}" BorderBrush="{x:Null}" x:Name="MenuTab">
+        <TabControl.Resources>
+            <Style TargetType="TabItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Grid Name="Panel">
+                                <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Panel" Property="Background" Value="#dbd7d2" />
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter TargetName="Panel" Property="Background" Value="#1D1D1E"/>
+                                    <Setter Property="Foreground" Value="#E5E5E5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </TabControl.Resources>
+        <TabItem Header="Задания" BorderBrush="{x:Null}">
             <ScrollViewer>
-                <Grid Background="#252526"/>
+                <Grid Background="#252526">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
             </ScrollViewer>
         </TabItem>
         <TabItem Header="Метод">
@@ -43,7 +79,7 @@
             </Grid>
         </TabItem>
         <TabItem Header="Блок схема">
-            <Grid Background="#FFE5E5E5"/>
+            <Grid Background="#252526"/>
         </TabItem>
         <TabItem Header="Код">
             <TabItem.ContextMenu>
@@ -53,21 +89,110 @@
             </TabItem.ContextMenu>
             <Grid x:Name="CodeGrid" Background="#252526" dragDrop:DragDrop.IsDropTarget="True"
             dragDrop:DragDrop.DropHandler="{Binding}">
-                <RichTextBox x:Name="CodeBox">
-                    <FlowDocument>
-                        <Paragraph>
-                            <Run Text=""/>
-                        </Paragraph>
-                    </FlowDocument>
-                </RichTextBox>
+                <!--<avalonEdit:TextEditor
+                    Name="avEditor"
+                    Background="White"
+                    DataContext="{Binding DocumentRoot}"
+                    Document="{Binding Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    Foreground="Black"
+                    IsModified="{Binding Path=IsDirty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsReadOnly="{Binding IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    LineNumbersForeground="Black"
+                    SyntaxHighlighting="{Binding HighlightingDefinition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                    <avalonEdit:TextEditor.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="Cut" Header="Cut">
+                </MenuItem>
+                <MenuItem Command="Copy" Header="Copy">
+                </MenuItem>
+                <MenuItem Command="Paste" Header="Paste">
+                </MenuItem>
+                <MenuItem Command="Delete" Header="Delete">
+                </MenuItem>
 
+                <Separator />
+
+                <MenuItem Command="Undo" Header="Undo">
+                </MenuItem>
+                <MenuItem Command="Redo" Header="Redo">
+                </MenuItem>
+                </ContextMenu>
+                </avalonEdit:TextEditor.ContextMenu>
+
+                <avalonEdit:TextEditor.Template>
+                    <ControlTemplate TargetType="{x:Type avalonEdit:TextEditor}">
+                        <ControlTemplate.Resources>
+                            <Style TargetType="{x:Type rendering:TextView}">
+                                <Setter Property="NonPrintableCharacterBrush" Value="#3F8080FF" />
+                                <Setter Property="LinkTextForegroundBrush" Value="#FF4040FF" />
+                                <Setter Property="LinkTextBackgroundBrush" Value="White" />
+                            </Style>
+
+                            <Style TargetType="{x:Type editing:TextArea}">
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                <Setter Property="SelectionBrush" Value="#1ba1e2" />
+                                <Setter Property="SelectionBorder">
+                                    <Setter.Value>
+                                        <Pen Brush="#1ba1e2" Thickness="1" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="SelectionCornerRadius" Value="0" />
+                                <Setter Property="SelectionForeground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type editing:TextArea}">
+                                            <DockPanel Focusable="False">
+                                                <ItemsControl
+                                                        DockPanel.Dock="Left"
+                                                        Focusable="False"
+                                                        ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LeftMargins}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                </ItemsControl>
+                                                <ContentPresenter
+                                                        Panel.ZIndex="-1"
+                                                        Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextView}"
+                                                        Focusable="False" />
+                                            </DockPanel>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ControlTemplate.Resources>
+                        <Border
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer
+                                    Name="PART_ScrollViewer"
+                                    Padding="{TemplateBinding Padding}"
+                                    HorizontalContentAlignment="Left"
+                                    VerticalContentAlignment="Top"
+                                    CanContentScroll="True"
+                                    Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextArea}"
+                                    Focusable="False"
+                                    HorizontalScrollBarVisibility="Auto"
+                                    VerticalScrollBarVisibility="Auto" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="WordWrap" Value="True">
+                                <Setter TargetName="PART_ScrollViewer" Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </avalonEdit:TextEditor.Template>
+                </avalonEdit:TextEditor> !-->
             </Grid>
+
         </TabItem>
         <TabItem Header="Тесты">
-            <Grid Background="#FFE5E5E5"/>
+            <Grid Background="#252526"/>
         </TabItem>
         <TabItem Header="Отправка">
-            <Grid Background="#FFE5E5E5"/>
+            <Grid Background="#252526"/>
         </TabItem>
     </TabControl>
 

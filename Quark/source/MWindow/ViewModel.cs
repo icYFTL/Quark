@@ -55,7 +55,7 @@ namespace Quark.source.MWindow
 
         public void UpdateCodeTab(string path) // Bad way to solve the problem. * REFACTOR *
         {
-            ((Application.Current.Windows[0]) as MainWindow).CodeBox.Document.Blocks.Add(new Paragraph(new Run(File.ReadAllText(path).Trim())));
+            //((Application.Current.Windows[0]) as MainWindow).CodeBox.Document.Blocks.Add(new Paragraph(new Run(File.ReadAllText(path).Trim())));
         }
 
         public DelegateCommand ImportCodeCommand { get; }
