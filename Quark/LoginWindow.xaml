@@ -9,7 +9,7 @@
                   xmlns:converter="clr-namespace:Quark.source.Converters"
                   mc:Ignorable="d"
                   Title="Login | Quark"
-                  Style="{StaticResource BlankWindow}" Height="400" Width="500">
+                  Style="{StaticResource BlankWindow}" Height="400" Width="500" BorderBrush="Purple">
     <mui:ModernWindow.DataContext>
         <local:ViewModel/>
     </mui:ModernWindow.DataContext>
@@ -22,6 +22,8 @@
         <KeyBinding Command="{Binding LoginCommand}" Key="Enter">
             <KeyBinding.CommandParameter>
                 <MultiBinding Converter="{StaticResource LoginWindowConverter}">
+                    <Binding ElementName="GroupsCombo" Path="SelectedItem"/>
+                    <Binding ElementName="StudentsCombo" Path="SelectedItem"/>
                     <Binding ElementName="PasswordField" />
                     <Binding ElementName="ThisWindow" />
                 </MultiBinding>
@@ -69,6 +71,8 @@
         <Button Content="Войти" Grid.Column="1" Grid.Row="7" Command="{Binding LoginCommand}">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource LoginWindowConverter}">
+                    <Binding ElementName="GroupsCombo" Path="SelectedItem"/>
+                    <Binding ElementName="StudentsCombo" Path="SelectedItem"/>
                     <Binding ElementName="PasswordField" />
                     <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type mui:ModernWindow}}" />
                 </MultiBinding>

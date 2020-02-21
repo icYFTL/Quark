@@ -1,12 +1,22 @@
 ﻿using Prism.Mvvm;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
 
 
 namespace Quark.source.MWindow
 {
     class Model : BindableBase
     {
-
+        private string _userNameTitle;
+        public string UserNameTitle
+        {
+            get
+            {
+                return _userNameTitle;
+            }
+            set
+            {
+                _userNameTitle = value;
+                RaisePropertyChanged("UserNameTitle");
+            }
+        }
     }
 }

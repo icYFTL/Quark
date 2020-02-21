@@ -8,8 +8,8 @@
                   xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                   xmlns:editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit"
                   xmlns:rendering="clr-namespace:ICSharpCode.AvalonEdit.Rendering;assembly=ICSharpCode.AvalonEdit"
-                  Title="Quark" 
-                  Style="{StaticResource BlankWindow}">
+                  Title="{Binding UserNameTitle, Mode=OneWay}" 
+                  Style="{StaticResource BlankWindow}" BorderBrush="Purple">
 
     <mui:ModernWindow.DataContext>
         <vm:ViewModel/>
@@ -23,7 +23,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="TabItem">
-                            <Grid Name="Panel">
+                            <Grid Name="Panel" Margin="2,0,0,0" Width="80">
                                 <ContentPresenter x:Name="ContentSite"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
@@ -89,16 +89,12 @@
             </TabItem.ContextMenu>
             <Grid x:Name="CodeGrid" Background="#252526" dragDrop:DragDrop.IsDropTarget="True"
             dragDrop:DragDrop.DropHandler="{Binding}">
-                <!--<avalonEdit:TextEditor
-                    Name="avEditor"
-                    Background="White"
-                    DataContext="{Binding DocumentRoot}"
-                    Document="{Binding Document, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    Foreground="Black"
-                    IsModified="{Binding Path=IsDirty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    IsReadOnly="{Binding IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    LineNumbersForeground="Black"
-                    SyntaxHighlighting="{Binding HighlightingDefinition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                <avalonEdit:TextEditor
+                    Name="CodeEdit"
+                    Background="#404040"
+                    Foreground="White"
+                    LineNumbersForeground="White"
+                    SyntaxHighlighting="C++">
                     <avalonEdit:TextEditor.ContextMenu>
                         <ContextMenu>
                             <MenuItem Command="Cut" Header="Cut">
@@ -184,7 +180,7 @@
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </avalonEdit:TextEditor.Template>
-                </avalonEdit:TextEditor> !-->
+                </avalonEdit:TextEditor>
             </Grid>
 
         </TabItem>
@@ -194,6 +190,7 @@
         <TabItem Header="Отправка">
             <Grid Background="#252526"/>
         </TabItem>
+
     </TabControl>
 
 </mui:ModernWindow>

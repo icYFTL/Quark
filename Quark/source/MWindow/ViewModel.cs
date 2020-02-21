@@ -16,6 +16,8 @@ namespace Quark.source.MWindow
         {
             _model.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
 
+            _model.UserNameTitle = $"Quark | {Globals.snp} > {Globals.group}";
+
             ImportCodeCommand = new DelegateCommand(() => {
                 Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
                 dialog.Filter = "CPP Code (*.cpp)|*.cpp|Text files (*.txt)|*.txt";
@@ -53,11 +55,12 @@ namespace Quark.source.MWindow
             }) ? DragDropEffects.Copy : DragDropEffects.None;
         }
 
-        public void UpdateCodeTab(string path) // Bad way to solve the problem. * REFACTOR *
+        public void UpdateCodeTab(string path) // Bad way to solve the problem. * REWRITE *
         {
-            //((Application.Current.Windows[0]) as MainWindow).CodeBox.Document.Blocks.Add(new Paragraph(new Run(File.ReadAllText(path).Trim())));
+            ((Application.Current.Windows[0]) as MainWindow).CodeEdit.Text = File.ReadAllText(path).Trim();
         }
 
         public DelegateCommand ImportCodeCommand { get; }
+        public string UserNameTitle => _model.UserNameTitle;
     }
 }

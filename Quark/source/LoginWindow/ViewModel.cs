@@ -5,6 +5,7 @@ using Quark.source.Utils.Database;
 using Prism.Mvvm;
 using System.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Controls;
+using System.Windows;
 
 namespace Quark.source.LoginWindow
 {
@@ -59,10 +60,24 @@ namespace Quark.source.LoginWindow
 
         public void Login(Object [] obj)
         {
-            // TO DO
+            // TO DO -> Realese the login method throught websockets;
+
+            foreach (var i in obj)
+                if (i == null)
+                {
+                    MessageBox.Show("Неверные данные", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); // TO DO -> ReDesign the Messagebox into dark shades;
+                    return;
+                }
+
+
+            Globals.group = obj[0].ToString();
+            Globals.snp = obj[1].ToString();
+            Globals.password = (obj[2] as PasswordBox).Password;
+
             MainWindow main = new MainWindow();
             main.Show();
-            (obj[1] as ModernWindow).Close();
+
+            (obj[3] as ModernWindow).Close();
         }
 
 
