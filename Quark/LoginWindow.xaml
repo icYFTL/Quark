@@ -9,7 +9,7 @@
                   xmlns:converter="clr-namespace:Quark.source.Converters"
                   mc:Ignorable="d"
                   Title="Login | Quark"
-                  Style="{StaticResource BlankWindow}" Height="400" Width="500" BorderBrush="Purple">
+                  Style="{StaticResource BlankWindow}" Height="400" Width="500" BorderBrush="Purple" ResizeMode="NoResize">
     <mui:ModernWindow.DataContext>
         <local:ViewModel/>
     </mui:ModernWindow.DataContext>
@@ -37,15 +37,17 @@
             <ColumnDefinition Width="142*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="85*"/>
-            <RowDefinition Height="23*"/>
-            <RowDefinition Height="12*"/>
-            <RowDefinition Height="24*"/>
-            <RowDefinition Height="12*"/>
-            <RowDefinition Height="22*"/>
-            <RowDefinition Height="33*"/>
-            <RowDefinition Height="26*"/>
+            <RowDefinition Height="117*"/>
             <RowDefinition Height="32*"/>
+            <RowDefinition Height="16*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="16*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="36*"/>
+            <RowDefinition Height="44*"/>
         </Grid.RowDefinitions>
         <ComboBox x:Name="GroupsCombo" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding GroupItems}" TextBoxBase.TextChanged="OnGroupsComboTextChanged"
           IsTextSearchEnabled="False" IsEditable="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
@@ -67,17 +69,19 @@
                 </ie:EventTrigger>
             </ie:Interaction.Triggers>
         </PasswordBox>
-        
-        <Button Content="Войти" Grid.Column="1" Grid.Row="7" Command="{Binding LoginCommand}">
+
+        <Button Content="Войти" Grid.Column="1" Grid.Row="9" Command="{Binding LoginCommand}">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource LoginWindowConverter}">
                     <Binding ElementName="GroupsCombo" Path="SelectedItem"/>
                     <Binding ElementName="StudentsCombo" Path="SelectedItem"/>
                     <Binding ElementName="PasswordField" />
+                    <Binding ElementName="RememberBox" Path="IsChecked"/>
                     <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type mui:ModernWindow}}" />
                 </MultiBinding>
             </Button.CommandParameter>
         </Button>
+        <CheckBox x:Name="RememberBox" Content="Remember?" Grid.Column="1" Grid.Row="7"/>
 
     </Grid>
 </mui:ModernWindow>

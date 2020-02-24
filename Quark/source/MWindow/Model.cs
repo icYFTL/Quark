@@ -18,5 +18,18 @@ namespace Quark.source.MWindow
                 RaisePropertyChanged("UserNameTitle");
             }
         }
+
+        private string _statusText;
+        public string StatusText
+        {
+            get 
+            { 
+                return _statusText; 
+            }
+            set { 
+                _statusText = value; 
+                RaisePropertyChanged("StatusText"); 
+            }
+        }
     }
 }

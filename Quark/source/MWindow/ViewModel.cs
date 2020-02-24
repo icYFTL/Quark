@@ -17,6 +17,7 @@ namespace Quark.source.MWindow
             _model.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
 
             _model.UserNameTitle = $"Quark | {Globals.snp} > {Globals.group}";
+            _model.StatusText = "Here is status bar";
 
             ImportCodeCommand = new DelegateCommand(() => {
                 Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
@@ -62,5 +63,6 @@ namespace Quark.source.MWindow
 
         public DelegateCommand ImportCodeCommand { get; }
         public string UserNameTitle => _model.UserNameTitle;
+        public string StatusText => _model.StatusText;
     }
 }

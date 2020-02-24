@@ -73,11 +73,12 @@ namespace Quark.source.LoginWindow
             Globals.group = obj[0].ToString();
             Globals.snp = obj[1].ToString();
             Globals.password = (obj[2] as PasswordBox).Password;
+            Globals.remember = (bool)obj[3];
 
             MainWindow main = new MainWindow();
             main.Show();
 
-            (obj[3] as ModernWindow).Close();
+            (obj[4] as ModernWindow).Close();
         }
 
 

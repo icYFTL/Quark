@@ -7,5 +7,6 @@
         public static string snp;
         public static string group;
         public static string password;
+        public static bool remember;
     }
 }
