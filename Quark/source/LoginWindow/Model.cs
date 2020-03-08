@@ -4,7 +4,14 @@ using System.Collections.Generic;
 
 namespace Quark.source.LoginWindow
 {
-    class Model : BindableBase { 
+    class Model : BindableBase {
+
+        private string _snackBarMessage;
+        public string snackBarMessage
+        {
+            get { return _snackBarMessage; }
+            set { _snackBarMessage = value; }
+        }
 
         private readonly ObservableCollection<string> _groupItems = new ObservableCollection<string>();
         public readonly ReadOnlyObservableCollection<string> GroupItems;

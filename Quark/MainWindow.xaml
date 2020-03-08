@@ -8,6 +8,7 @@
                   xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                   xmlns:editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit"
                   xmlns:rendering="clr-namespace:ICSharpCode.AvalonEdit.Rendering;assembly=ICSharpCode.AvalonEdit"
+                  
                   Title="{Binding UserNameTitle, Mode=OneWay}" 
                   Style="{StaticResource BlankWindow}" BorderBrush="Purple" Height="420" Width="800" MaxHeight="450" MinHeight="420">
 
@@ -89,12 +90,16 @@
                 </TabItem.ContextMenu>
                 <Grid x:Name="CodeGrid" Background="#252526" dragDrop:DragDrop.IsDropTarget="True"
             dragDrop:DragDrop.DropHandler="{Binding}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="22*"/>
+                        <RowDefinition Height="315*"/>
+                    </Grid.RowDefinitions>
                     <avalonEdit:TextEditor
                     Name="CodeEdit"
                     Background="#404040"
                     Foreground="White"
                     LineNumbersForeground="White"
-                    SyntaxHighlighting="C++">
+                    SyntaxHighlighting="C++" Grid.Row="1">
                         <avalonEdit:TextEditor.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="Cut" Header="Cut">

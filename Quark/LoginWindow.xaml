@@ -7,16 +7,23 @@
                   xmlns:ie="http://schemas.microsoft.com/xaml/behaviors" 
                   xmlns:local="clr-namespace:Quark.source.LoginWindow"
                   xmlns:converter="clr-namespace:Quark.source.Converters"
+                  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                   mc:Ignorable="d"
-                  Title="Login | Quark"
-                  Style="{StaticResource BlankWindow}" Height="400" Width="500" BorderBrush="Purple" ResizeMode="NoResize">
+                  Title="Login"
+                  Style="{StaticResource BlankWindow}" Height="456.333" Width="481.833" ResizeMode="NoResize">
     <mui:ModernWindow.DataContext>
         <local:ViewModel/>
     </mui:ModernWindow.DataContext>
 
     <mui:ModernWindow.Resources>
-        <converter:LoginWindowConverter x:Key="LoginWindowConverter" />
+        <converter:LoginWindowConverter x:Key="LoginWindowConverter"/>
     </mui:ModernWindow.Resources>
+    <mui:ModernWindow.BorderBrush>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="Black" Offset="0.419"/>
+            <GradientStop Color="#FFD30F0F" Offset="1"/>
+        </LinearGradientBrush>
+    </mui:ModernWindow.BorderBrush>
 
     <mui:ModernWindow.InputBindings>
         <KeyBinding Command="{Binding LoginCommand}" Key="Enter">
@@ -25,40 +32,40 @@
                     <Binding ElementName="GroupsCombo" Path="SelectedItem"/>
                     <Binding ElementName="StudentsCombo" Path="SelectedItem"/>
                     <Binding ElementName="PasswordField" />
-                    <Binding ElementName="ThisWindow" />
+                    <Binding ElementName="RememberBox" Path="IsChecked"/>
+                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type mui:ModernWindow}}" />
                 </MultiBinding>
             </KeyBinding.CommandParameter>
         </KeyBinding>
     </mui:ModernWindow.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="143*"/>
-            <ColumnDefinition Width="207*"/>
-            <ColumnDefinition Width="142*"/>
+            <ColumnDefinition Width="129*"/>
+            <ColumnDefinition Width="209*"/>
+            <ColumnDefinition Width="129*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="117*"/>
-            <RowDefinition Height="32*"/>
-            <RowDefinition Height="16*"/>
-            <RowDefinition Height="33*"/>
-            <RowDefinition Height="16*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="36*"/>
-            <RowDefinition Height="44*"/>
+            <RowDefinition Height="174*"/>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="42*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="43*"/>
         </Grid.RowDefinitions>
-        <ComboBox x:Name="GroupsCombo" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding GroupItems}" TextBoxBase.TextChanged="OnGroupsComboTextChanged"
-          IsTextSearchEnabled="False" IsEditable="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+        <ComboBox x:Name="GroupsCombo" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding GroupItems}" 
+          materialDesign:HintAssist.Hint="Группа" IsEditable="True" materialDesign:HintAssist.HintOpacity=".26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="28" Margin="0,7,0,12">
             <ie:Interaction.Triggers>
                 <ie:EventTrigger EventName="SelectionChanged">
                     <ie:InvokeCommandAction Command="{Binding GroupsItemsSelectionChanged}"  CommandParameter="{Binding ElementName=GroupsCombo, Path=SelectedItem}"/>
                 </ie:EventTrigger>
             </ie:Interaction.Triggers>
         </ComboBox>
-        <ComboBox x:Name="StudentsCombo" Grid.Column="1" Grid.Row="3" ItemsSource="{Binding StudentItems}" TextBoxBase.TextChanged="OnStudentsComboTextChanged"
-          IsTextSearchEnabled="False" IsEditable="True" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <ComboBox x:Name="StudentsCombo" Grid.Column="1" Grid.Row="3" ItemsSource="{Binding StudentItems}"
+           materialDesign:HintAssist.Hint="ФИО" IsEditable="True" materialDesign:HintAssist.HintOpacity=".26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="28" Margin="0,10,0,9"/>
         <PasswordBox x:Name="PasswordField" Grid.Column="1" Grid.Row="5" Password="Password" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <ie:Interaction.Triggers>
                 <ie:EventTrigger EventName="GotFocus">
@@ -70,7 +77,7 @@
             </ie:Interaction.Triggers>
         </PasswordBox>
 
-        <Button Content="Войти" Grid.Column="1" Grid.Row="9" Command="{Binding LoginCommand}">
+        <Button Content="Войти" Grid.Column="1" Grid.Row="9" Command="{Binding LoginCommand}" Height="Auto" Margin="0,6,0,5">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource LoginWindowConverter}">
                     <Binding ElementName="GroupsCombo" Path="SelectedItem"/>
@@ -81,7 +88,10 @@
                 </MultiBinding>
             </Button.CommandParameter>
         </Button>
-        <CheckBox x:Name="RememberBox" Content="Remember?" Grid.Column="1" Grid.Row="7"/>
-
+        <CheckBox x:Name="RememberBox" Content="Запомнить?" Grid.Column="1" Grid.Row="7"/>
+        <materialDesign:Snackbar
+  HorizontalAlignment="Stretch"
+  x:Name="Snackbar" Grid.ColumnSpan="2" Height="0" Margin="0,0,35,5"/>
+        <Image Source="source/Pics/logo.png" Stretch="UniformToFill" Grid.Column="1"/>
     </Grid>
 </mui:ModernWindow>

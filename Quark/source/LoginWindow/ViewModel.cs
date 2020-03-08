@@ -6,6 +6,7 @@ using Prism.Mvvm;
 using System.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Controls;
 using System.Windows;
+using System.Windows.Data;
 
 namespace Quark.source.LoginWindow
 {
@@ -15,6 +16,7 @@ namespace Quark.source.LoginWindow
         
         public ViewModel()
         {
+            _model.snackBarMessage = "123";
             _model.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
 
             GroupsItemsSelectionChanged = new DelegateCommand<string>(str =>
@@ -22,6 +24,9 @@ namespace Quark.source.LoginWindow
                 if (GroupItems.Contains(str))
                     UpdateStudents(str);
             });
+
+            
+
             PasswordField_GotFocus = new DelegateCommand<PasswordBox>(pbox =>
             {
                 if (pbox.Password == "Password")
@@ -90,6 +95,8 @@ namespace Quark.source.LoginWindow
 
         public ReadOnlyObservableCollection<string> GroupItems => _model.GroupItems;
         public ReadOnlyObservableCollection<string> StudentItems => _model.StudentItems;
+
+        public string snackBarMessage => _model.snackBarMessage;
 
     }
 }
