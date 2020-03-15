@@ -7,6 +7,9 @@ using System.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
+using System.Windows.Media;
+using MaterialDesignThemes.Wpf;
 
 namespace Quark.source.LoginWindow
 {
@@ -16,15 +19,14 @@ namespace Quark.source.LoginWindow
         
         public ViewModel()
         {
-            _model.snackBarMessage = "123";
+           
             _model.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-
+            
             GroupsItemsSelectionChanged = new DelegateCommand<string>(str =>
             {
                 if (GroupItems.Contains(str))
                     UpdateStudents(str);
             });
-
             
 
             PasswordField_GotFocus = new DelegateCommand<PasswordBox>(pbox =>
@@ -47,7 +49,7 @@ namespace Quark.source.LoginWindow
 
             UpdateGroups();
         }
-        
+
         public void UpdateGroups()
         {
             InternalBD _bd = InternalBD.getInstance();
@@ -67,13 +69,11 @@ namespace Quark.source.LoginWindow
         {
             // TO DO -> Realese the login method throught websockets;
 
-            foreach (var i in obj)
-                if (i == null)
-                {
-                    MessageBox.Show("Неверные данные", "Exception", MessageBoxButton.OK, MessageBoxImage.Error); // TO DO -> ReDesign the Messagebox into dark shades;
+            foreach (var _temp in obj)
+                if (_temp == null)
                     return;
-                }
 
+                
 
             Globals.group = obj[0].ToString();
             Globals.snp = obj[1].ToString();
@@ -86,7 +86,7 @@ namespace Quark.source.LoginWindow
             (obj[4] as ModernWindow).Close();
         }
 
-
+ 
     
         public DelegateCommand<string> GroupsItemsSelectionChanged { get; }
         public DelegateCommand<PasswordBox> PasswordField_GotFocus { get; }
@@ -96,7 +96,6 @@ namespace Quark.source.LoginWindow
         public ReadOnlyObservableCollection<string> GroupItems => _model.GroupItems;
         public ReadOnlyObservableCollection<string> StudentItems => _model.StudentItems;
 
-        public string snackBarMessage => _model.snackBarMessage;
-
+        public SnackbarMessageQueue snackBarMessageQueue => _model.snackBarMessageQueue;
     }
 }

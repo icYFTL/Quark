@@ -16,7 +16,7 @@ namespace Quark.source.MWindow
         {
             _model.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
 
-            _model.UserNameTitle = $"Quark | {Globals.snp} > {Globals.group}";
+            _model.UserNameTitle = $"Main | {Globals.snp} > {Globals.group}";
             _model.StatusText = "Here is status bar";
 
             ImportCodeCommand = new DelegateCommand(() => {

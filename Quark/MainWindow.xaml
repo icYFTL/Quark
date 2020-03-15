@@ -10,7 +10,7 @@
                   xmlns:rendering="clr-namespace:ICSharpCode.AvalonEdit.Rendering;assembly=ICSharpCode.AvalonEdit"
                   
                   Title="{Binding UserNameTitle, Mode=OneWay}" 
-                  Style="{StaticResource BlankWindow}" BorderBrush="Purple" Height="420" Width="800" MaxHeight="450" MinHeight="420">
+                  Style="{StaticResource BlankWindow}" Height="420" Width="800" MaxHeight="450" MinHeight="420">
 
     <mui:ModernWindow.DataContext>
         <vm:ViewModel/>

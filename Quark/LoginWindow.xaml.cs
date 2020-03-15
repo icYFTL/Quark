@@ -1,12 +1,4 @@
 ﻿using FirstFloor.ModernUI.Windows.Controls;
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using ToastNotifications;
-using ToastNotifications.Lifetime;
-using ToastNotifications.Position;
-using ToastNotifications.Messages;
 
 namespace Quark
 {
@@ -17,7 +9,9 @@ namespace Quark
     {
         public LoginWindow()
         {
+            
             InitializeComponent();
+            
             
         }
 
