@@ -1,7 +1,6 @@
 ﻿using Prism.Commands;
 using System;
 using System.Collections.ObjectModel;
-using Quark.source.Utils.Database;
 using Prism.Mvvm;
 using System.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Controls;
@@ -10,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Media.Animation;
 using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
+using System.Collections.Generic;
 
 namespace Quark.source.LoginWindow
 {
@@ -52,17 +52,22 @@ namespace Quark.source.LoginWindow
 
         public void UpdateGroups()
         {
-            InternalBD _bd = InternalBD.getInstance();
-            _model.UpdateGroups(_bd.GetGroups());
+
+            List<string> list = new List<string>();
+            list.Add("ИКБО-16-19");
+            list.Add("ИКБО-17-19");
+            _model.UpdateGroups(list);
 
         }
 
         public void UpdateStudents(string group)
         {
             _model.StudentsClear();
-
-            InternalBD _bd = InternalBD.getInstance();
-            _model.UpdateStudents(_bd.GetStudents(group));
+            List<string> list = new List<string>();
+            list.Add("БЕЛЯВСКИЙ");
+            list.Add("ППАВЛАВ");
+            list.Add("Ковалев Алексей");
+            _model.UpdateStudents(list);
         }
 
         public void Login(Object [] obj)
