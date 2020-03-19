@@ -1,4 +1,11 @@
 ﻿using FirstFloor.ModernUI.Windows.Controls;
+using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Text;
+using System.Windows;
+
 
 namespace Quark
 {
@@ -9,11 +16,7 @@ namespace Quark
     {
         public LoginWindow()
         {
-            
             InitializeComponent();
-            
-            
         }
-
     }
 }

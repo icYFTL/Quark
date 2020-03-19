@@ -1,12 +1,12 @@
-﻿namespace Quark.source
+﻿using System.Collections.Generic;
+
+namespace Quark.source
 {
     public static class Globals
     {
-        public static string db_path = "./main.db";
-
-        public static string snp;
-        public static string group;
-        public static string password;
-        public static bool remember;
+        public static Utils.WebSocketClient socketClient;
+        public static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        public static string AppDataPath;
+        public static Dictionary<string, string> User;
     }
 }

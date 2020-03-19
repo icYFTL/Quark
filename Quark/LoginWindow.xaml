@@ -10,23 +10,27 @@
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                   mc:Ignorable="d"
                   Title="Login"
-                  Style="{StaticResource BlankWindow}" Height="516.333" Width="481.833" ResizeMode="NoResize">
+                  Style="{StaticResource BlankWindow}" Height="550" Width="430" ResizeMode="NoResize">
     <mui:ModernWindow.DataContext>
         <local:ViewModel/>
     </mui:ModernWindow.DataContext>
 
     <mui:ModernWindow.Resources>
         <converter:LoginWindowConverter x:Key="LoginWindowConverter"/>
-
     </mui:ModernWindow.Resources>
 
+    <ie:Interaction.Triggers>
+        <ie:EventTrigger EventName="Loaded">
+            <ie:InvokeCommandAction Command="{Binding LoginWindow_Loaded}" />
+        </ie:EventTrigger>
+    </ie:Interaction.Triggers>
 
     <mui:ModernWindow.InputBindings>
         <KeyBinding Command="{Binding LoginCommand}" Key="Enter">
             <KeyBinding.CommandParameter>
                 <MultiBinding Converter="{StaticResource LoginWindowConverter}">
-                    <Binding ElementName="GroupsCombo"/>
-                    <Binding ElementName="StudentsCombo"/>
+                    <Binding ElementName="GroupsCombo" Path="SelectedItem"/>
+                    <Binding ElementName="StudentsCombo" Path="SelectedItem"/>
                     <Binding ElementName="PasswordField" />
                     <Binding ElementName="RememberBox" Path="IsChecked"/>
                     <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type mui:ModernWindow}}" />
@@ -36,27 +40,26 @@
     </mui:ModernWindow.InputBindings>
 
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="129*"/>
             <ColumnDefinition Width="209*"/>
             <ColumnDefinition Width="129*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="209*"/>
+            <RowDefinition Height="135*"/>
             <RowDefinition Height="25*"/>
-            <RowDefinition Height="21*"/>
+            <RowDefinition Height="17*"/>
             <RowDefinition Height="25*"/>
-            <RowDefinition Height="21*"/>
+            <RowDefinition Height="17*"/>
             <RowDefinition Height="25*"/>
-            <RowDefinition Height="16*"/>
-            <RowDefinition Height="28*"/>
-            <RowDefinition Height="15*"/>
-            <RowDefinition Height="30*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="25*"/>
+            <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
         <ComboBox x:Name="GroupsCombo" Grid.Column="1" ItemsSource="{Binding GroupItems}" 
-          materialDesign:HintAssist.Hint="Группа" IsEditable="True" materialDesign:HintAssist.HintOpacity=".26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="28" Grid.Row="1">
+          materialDesign:HintAssist.Hint="Группа" IsEditable="True" materialDesign:HintAssist.HintOpacity=".26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="32" Grid.Row="1">
             <ie:Interaction.Triggers>
                 <ie:EventTrigger EventName="SelectionChanged">
                     <ie:InvokeCommandAction Command="{Binding GroupsItemsSelectionChanged}"  CommandParameter="{Binding ElementName=GroupsCombo, Path=SelectedItem}"/>
@@ -64,7 +67,7 @@
             </ie:Interaction.Triggers>
         </ComboBox>
         <ComboBox x:Name="StudentsCombo" Grid.Column="1" Grid.Row="3" ItemsSource="{Binding StudentItems}"
-           materialDesign:HintAssist.Hint="ФИО" IsEditable="True" materialDesign:HintAssist.HintOpacity=".26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="28"/>
+           materialDesign:HintAssist.Hint="ФИО" IsEditable="True" materialDesign:HintAssist.HintOpacity=".26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="32"/>
         <PasswordBox x:Name="PasswordField" Grid.Column="1" Grid.Row="5" Password="Password" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MaxLength="30">
             <ie:Interaction.Triggers>
                 <ie:EventTrigger EventName="GotFocus">
@@ -84,13 +87,12 @@
                     <Binding ElementName="PasswordField" />
                     <Binding ElementName="RememberBox" Path="IsChecked"/>
                     <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type mui:ModernWindow}}" />
-
                 </MultiBinding>
             </Button.CommandParameter>
         </Button>
         <CheckBox x:Name="RememberBox" Content="Запомнить?" Grid.Column="1" Grid.Row="7"/>
-        <Image Source="source/Pics/logo.png" Stretch="UniformToFill" Grid.ColumnSpan="3" Margin="110,0,111,0"/>
-        <materialDesign:Snackbar x:Name="Snackbar" Grid.ColumnSpan="3" MessageQueue="{Binding snackBarMessageQueue}" Grid.Row="10" Height="28" Width="477" Margin="0,0,-1,0"/>
+        <Image Source="source/Pics/logo.png" Stretch="UniformToFill" Grid.ColumnSpan="3" Margin="85,0,86,10"/>
+
 
 
     </Grid>

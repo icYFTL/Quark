@@ -1,19 +1,11 @@
 ﻿using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using MaterialDesignThemes.Wpf;
 
 namespace Quark.source.LoginWindow
 {
-    class Model : BindableBase {
-
-
-        private SnackbarMessageQueue _snackBarMessageQueue;
-        public SnackbarMessageQueue snackBarMessageQueue
-        {
-            get { return _snackBarMessageQueue; }
-            set { _snackBarMessageQueue = value; }
-        }
+    class Model : BindableBase
+    {
 
         private readonly ObservableCollection<string> _groupItems = new ObservableCollection<string>();
         public readonly ReadOnlyObservableCollection<string> GroupItems;

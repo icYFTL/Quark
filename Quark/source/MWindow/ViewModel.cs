@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
+
 
 namespace Quark.source.MWindow
 {
@@ -16,7 +16,7 @@ namespace Quark.source.MWindow
         {
             _model.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
 
-            _model.UserNameTitle = $"Main | {Globals.snp} > {Globals.group}";
+            _model.UserNameTitle = $"Main | {Globals.User["username"]} > {Globals.User["group"]}";
             _model.StatusText = "Here is status bar";
 
             ImportCodeCommand = new DelegateCommand(() => {
