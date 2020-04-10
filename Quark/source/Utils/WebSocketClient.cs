@@ -7,19 +7,32 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Net.WebSockets;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace Quark.source.Utils
 {
+    /// <summary>
+    /// This [Singleton] class Communicating with websocket server.
+    /// 
+    /// Method (GetSettings) sets server's ip and port. It takes it from Config.json.
+    /// Method (Connect) trying to connect to a specific server. ip and port storage in vars ip and port.
+    /// 
+    /// </summary>
     public class WebSocketClient
     {
         private string ip;
         private int port;
-        private WebsocketClient client;
+        public WebsocketClient client;
 
-        public WebSocketClient()
+        public static WebSocketClient instance;
+        public static WebSocketClient get_instance()
         {
-            this.GetSettings();
+            if (instance == null)
+                instance = new WebSocketClient();
+            return instance;
+            
         }
+        private WebSocketClient() { }
         private void GetSettings()
         {
             try
@@ -31,6 +44,7 @@ namespace Quark.source.Utils
             catch (Exception)
             {
                 MessageBox.Show("Отсутсвует файл Config.json", "FATAL", MessageBoxButton.OK, MessageBoxImage.Error);
+                Globals.Logger.Error("FATAL: Missing Config.json");
                 Environment.Exit(-4);
             }
 
@@ -38,6 +52,7 @@ namespace Quark.source.Utils
 
         public async void Connect()
         {
+            GetSettings();
             try
             {
                 var exitEvent = new ManualResetEvent(false);
@@ -55,23 +70,22 @@ namespace Quark.source.Utils
             catch (Exception e)
             {
                 MessageBox.Show("Произошла фатальная ошибка.\nПерезапустите программу или обратитесь к администратору.", "FATAL", MessageBoxButton.OK, MessageBoxImage.Error);
-                Globals.Logger.Error(e.ToString());
+                Globals.Logger.Error("FATAL: " + e.ToString());
             }
 
         }
 
-        public void Send(JObject data, Delegate handler)
+        public void Send(JObject data, Delegate handler, List<object> obj)
         {
-
-            this.client.MessageReceived.Subscribe(msg => { /*TODO*/});
             try
             {
                 Task.Run(() => this.client.Send(data.ToString()));
+                Task.Run(() => this.client.MessageReceived.Subscribe(msg => { handler.DynamicInvoke(JObject.Parse(msg.Text), obj); }));
             }
             catch (Exception e)
             {
                 MessageBox.Show("Произошла фатальная ошибка.\nПерезапустите программу или обратитесь к администратору.", "FATAL", MessageBoxButton.OK, MessageBoxImage.Error);
-                Globals.Logger.Error(e.ToString());
+                Globals.Logger.Error("FATAL: " + e.ToString());
             }
         }
 

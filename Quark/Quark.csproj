@@ -10,6 +10,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Quark</RootNamespace>
+    <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <AssemblyName>Quark</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -20,6 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
+    <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -28,6 +30,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+    <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -112,9 +115,9 @@
     <Reference Include="Websocket.Client, Version=4.2.0.0, Culture=neutral, PublicKeyToken=ae648c6d12f59b1b, processorArchitecture=MSIL">
       <HintPath>..\packages\Websocket.Client.4.2.3\lib\netstandard2.0\Websocket.Client.dll</HintPath>
     </Reference>
-    <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -128,11 +131,13 @@
     <Compile Include="source\Abstractions\TaskItem.cs" />
     <Compile Include="source\Converters\LoginWindowConverter.cs" />
     <Compile Include="source\Globals.cs" />
+    <Compile Include="source\Logs\Logs.cs" />
     <Compile Include="source\LoginWindow\Model.cs" />
     <Compile Include="source\LoginWindow\ViewModel.cs" />
     <Compile Include="source\MWindow\Model.cs" />
     <Compile Include="source\MWindow\ViewModel.cs" />
     <Compile Include="source\OnExit.cs" />
+    <Compile Include="source\Utils\NetStat.cs" />
     <Compile Include="source\Utils\WebSocketClient.cs" />
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
@@ -157,7 +162,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
@@ -169,7 +174,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="source\Objects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

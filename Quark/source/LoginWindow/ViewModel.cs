@@ -7,23 +7,26 @@ using FirstFloor.ModernUI.Windows.Controls;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Threading.Tasks;
 
 namespace Quark.source.LoginWindow
 {
     class ViewModel : BindableBase
     {
         readonly Model _model = new Model();
-        
+
         public ViewModel()
         {
             _model.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-            
+
             GroupsItemsSelectionChanged = new DelegateCommand<string>(str =>
             {
                 if (GroupItems.Contains(str))
                     UpdateStudents(str);
             });
-            
+
 
             PasswordField_GotFocus = new DelegateCommand<PasswordBox>(pbox =>
             {
@@ -37,27 +40,34 @@ namespace Quark.source.LoginWindow
                     pbox.Password = "Password";
             });
 
-            LoginCommand = new DelegateCommand<Object []>(obj =>
+            LoginCommand = new DelegateCommand<Object[]>(obj =>
+           {
+               Login(obj);
+
+           });
+
+            LoginWindow_Loaded = new DelegateCommand(() =>
             {
-                Login(obj);
+                Logs.Logs._Init();
 
-            });
-
-            LoginWindow_Loaded = new DelegateCommand(() => {
-                Globals.socketClient = new Utils.WebSocketClient();
+                if (!Task.Run(() => source.Utils.NetStat.is_connected()).Result)
+                {
+                    MessageBox.Show("Не удается подключиться к сети интернет.", "FATAL", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Globals.Logger.Error("FATAL: Net connection error.");    
+                    Environment.Exit(-1);
+                }
+                Globals.socketClient = Utils.WebSocketClient.get_instance();
                 Globals.socketClient.Connect();
                 // TODO: https://github.com/rafallopatka/ToastNotifications/blob/master-v2/Docs/CustomNotificatios.md TOASTS
 
-                Globals.AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Quark");
-                Directory.CreateDirectory(Path.Combine(Globals.AppDataPath, "logs"));
+
             });
 
             UpdateGroups();
 
-
         }
 
-        
+
 
         public void UpdateGroups()
         {
@@ -78,7 +88,7 @@ namespace Quark.source.LoginWindow
             _model.UpdateStudents(list);
         }
 
-        public void Login(Object [] obj)
+        public void Login(Object[] obj)
         {
             foreach (var _temp in obj)
                 if (_temp == null)
@@ -89,43 +99,54 @@ namespace Quark.source.LoginWindow
             jobj["group"] = obj[0].ToString();
             jobj["username"] = obj[1].ToString();
             jobj["password"] = (obj[2] as PasswordBox).Password;
+            jobj["operation"] = "auth";
 
-            //string ans = "";
+            List<object> obj_ = obj.ToList();
+            obj_.Add(jobj);
 
-            //Globals.socketClient.Send(jobj, ref ans);
+            auth_ a = new auth_(Auth);
 
-            Globals.User = new Dictionary<string, string>();
-            Globals.User.Add("group", obj[0].ToString());
-            Globals.User.Add("username", obj[1].ToString());
-            Globals.User.Add("password", (obj[2] as PasswordBox).Password);
+            Globals.socketClient.Send(jobj, a, obj_);
 
-            if ((bool)obj[3])
-                this.save_auth_data(jobj);
-
-            MainWindow main = new MainWindow();
-            main.Show();
-
-            (obj[4] as ModernWindow).Close();
         }
 
-        private void save_auth_data(JObject data)
+        public static void save_auth_data(JObject data)
         {
             File.WriteAllText(Path.Combine(Globals.AppDataPath, "userdata.json"), data.ToString());
         }
 
+        delegate bool auth_(JObject repl, ref List<object> obj);
 
-        //delegate void Auth(out string message);
-       /* private bool auth() TODO
-        { 
-            JObject jobj = JObject.Parse(message);
-            return true ? jobj["status"].ToString() == "OK" : false;
-        }*/
-    
+        public bool Auth(JObject repl, ref List<object> obj)
+        {
+            if (repl["status"].ToString() == "OK")
+            {
+                Globals.User = new Dictionary<string, string>();
+                Globals.User.Add("group", obj[0].ToString());
+                Globals.User.Add("username", obj[1].ToString());
+                Globals.User.Add("password", (obj[2] as PasswordBox).Password);
+
+                if ((bool)obj[3])
+                    save_auth_data(obj[5] as JObject);
+
+                MainWindow main = new MainWindow();
+                main.Show();
+
+                (obj[4] as ModernWindow).Close();
+                return true;
+            }
+            else
+            {
+                MessageBox.Show(repl["description"].ToString(), repl["status"].ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
+
         public DelegateCommand<string> GroupsItemsSelectionChanged { get; }
         public DelegateCommand<PasswordBox> PasswordField_GotFocus { get; }
         public DelegateCommand<PasswordBox> PasswordField_LostFocus { get; }
         public DelegateCommand LoginWindow_Loaded { get; }
-        public DelegateCommand<Object []> LoginCommand { get; }
+        public DelegateCommand<Object[]> LoginCommand { get; }
 
         public ReadOnlyObservableCollection<string> GroupItems => _model.GroupItems;
         public ReadOnlyObservableCollection<string> StudentItems => _model.StudentItems;
